@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Global 'Stache · Movember 2026</title>
+<meta name="description" content="A group of friends around the world fundraising for mental health through creative projects and growing moustaches. Donate to our Movember teams and see what kit is coming back.">
+<meta property="og:title" content="Global 'Stache · Movember 2026">
+<meta property="og:description" content="Donate to our Movember teams, join the Run Club, and see the kit coming back soon.">
+<meta property="og:image" content="https://globalstache.com/img/hero-soho.jpg">
+<meta property="og:url" content="https://globalstache.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<style>
+/* Global 'Stache holding page. Brand: Stache Blue on white, square corners, flat colour. */
+:root{
+  --blue:#0000FF; --white:#FFFFFF; --mist:#F7F7FB; --ink:#303132; --grey:#535151; --rule:#D9D9F2;
+  --orange:#FF8021; --steel:#46627A;
+  --display:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --body:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);font:400 16px/1.55 var(--body)}
+img{display:block;max-width:100%;height:auto}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+.wide{font-family:var(--display);font-stretch:125%;font-weight:900;text-transform:uppercase;letter-spacing:-.01em;line-height:.95;text-wrap:balance;margin:0}
+p{margin:0}
+
+header{border-bottom:3px solid var(--blue);background:var(--white)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
+.lockup{display:flex;align-items:center;gap:12px;text-decoration:none}
+.lockup .g{width:40px}
+.lockup .w{width:140px}
+nav{display:flex;gap:22px;flex-wrap:wrap}
+nav a{font:700 15px var(--body);text-decoration:none;color:var(--blue);padding-block:4px;border-bottom:2px solid transparent}
+nav a:hover{border-color:var(--blue)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:var(--white);border:2px solid var(--blue);font:700 14px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;padding:16px 24px}
+.btn:hover{background:var(--ink);border-color:var(--ink)}
+.btn.onblue{background:var(--white);color:var(--blue);border-color:var(--white)}
+.btn.onblue:hover{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.ghost:hover{background:var(--blue);color:var(--white)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+
+.hero{position:relative;background:var(--ink)}
+.hero>img{width:100%;height:clamp(440px,60vw,640px);object-fit:cover;object-position:center 35%;opacity:.9}
+.hero .over{position:absolute;inset:0;display:flex;align-items:flex-end}
+.hero .over .wrap{width:100%;padding-block:40px}
+.card{background:var(--white);padding:28px;max-width:500px;display:grid;gap:14px}
+.card .mark{width:min(100%,300px)}
+.card h1{font-size:clamp(32px,4.6vw,48px);color:var(--blue)}
+.card p{font-size:17px}
+
+.sec{padding-block:64px}
+.sec h2{font-size:clamp(32px,5vw,54px);margin-bottom:16px}
+.sec .lede{font-size:18px;max-width:58ch}
+.sec.blue{background:var(--blue);color:var(--white)}
+.sec.mist{background:var(--mist)}
+
+.kit{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:32px}
+.kt{border:1px solid var(--rule);display:flex;flex-direction:column;min-width:0}
+.ph{position:relative;aspect-ratio:1;background:var(--mist);overflow:hidden}
+.ph.white{background:var(--white)}
+.ph img{width:100%;height:100%;object-fit:contain}
+.soon{position:absolute;left:14px;top:14px;font:700 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;padding:8px 10px;background:var(--blue);color:var(--white)}
+.soon.steel{background:var(--steel)}
+.meta{padding:18px;border-top:1px solid var(--rule);display:grid;gap:6px}
+.meta h3{margin:0;font:900 22px/1.05 var(--display);font-stretch:112%;text-transform:uppercase}
+.meta p{font-size:15px;color:var(--grey)}
+.meta .price{color:var(--ink);font-weight:700;margin-top:6px;font-variant-numeric:tabular-nums}
+.meta .price small{font-weight:400;color:var(--grey);font-size:13px}
+.ask{margin-top:24px;font-size:17px}
+.ask a{font-weight:700}
+
+.rc{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center}
+.rc h2{color:var(--orange)}
+.rc img{width:min(100%,380px);justify-self:center}
+
+footer{background:var(--blue);color:var(--white)}
+footer .wrap{padding-block:40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+footer p{max-width:60ch;font-size:14px}
+footer .np{font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+footer a{color:var(--white)}
+footer img{width:100px}
+
+@media (max-width:760px){
+  .kit,.rc{grid-template-columns:minmax(0,1fr)}
+  .rc img{width:min(100%,260px)}
+  nav{gap:16px}
+  .hero .over{position:static}
+  .hero .over .wrap{padding-block:0}
+  .card{max-width:none;margin:-60px 0 0;position:relative}
+  .sec{padding-block:48px}
+}
+@media (prefers-reduced-motion:no-preference){.btn,nav a{transition:background .15s,color .15s,border-color .15s}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="lockup" href="#top" aria-label="Global 'Stache home"><img class="g" src="img/logo.png" alt="" width="1200" height="1200"><img class="w" src="img/wordmark.png" alt="" width="1800" height="463"></a>
+    <nav aria-label="Main">
+      <a href="#donate">Donate</a>
+      <a href="#kit">Kit</a>
+      <a href="#run-club">Run Club</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <img src="img/hero-soho.jpg" alt="Three friends in Smiley tees walking down a cobbled Soho street, seen from behind" width="1800" height="1200">
+    <div class="over"><div class="wrap">
+      <div class="card">
+        <h1 class="wide">Movember 2026 is on!</h1>
+        <p>A group of friends around the world fundraising for mental health through creative projects and growing moustaches. Our new site and shop are on the way. Until then, here's how to back the team.</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="sec blue" id="donate">
+    <div class="wrap">
+      <h2 class="wide">Donate</h2>
+      <p class="lede">Still prefer to donate directly to our Movember page? Not a problem! Every donation goes straight to the Movember Foundation.</p>
+      <div class="btns">
+        <a class="btn onblue" href="https://uk.movember.com/team/2370688" target="_blank" rel="noopener">Donate to the UK team</a>
+        <a class="btn onblue" href="https://us.movember.com/team/2472881" target="_blank" rel="noopener">Donate to the US team</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="kit">
+    <div class="wrap">
+      <h2 class="wide">The kit is coming back!</h2>
+      <p class="lede">Our race singlet and trail shirt are returning soon. Every penny of profit goes to Movember.</p>
+      <div class="kit">
+        <article class="kt">
+          <div class="ph"><img src="img/singlet-3d-three-quarter.jpg" alt="Race singlet: white vest with a column of blue moustaches and Worldy on the chest" loading="lazy"><span class="soon">Coming soon</span></div>
+          <div class="meta">
+            <h3>GSRC Race Singlet</h3>
+            <p>SOAR × Global 'Stache. Our race vest is back for a new batch. Pre-orders open soon.</p>
+            <p class="price">Expected around £95 <small>· price to be confirmed</small></p>
+          </div>
+        </article>
+        <article class="kt">
+          <div class="ph white"><img src="img/trail-shirt-front.jpg" alt="Trail shirt: steel blue with white trail-profile lines" loading="lazy"><span class="soon steel">Coming soon</span></div>
+          <div class="meta">
+            <h3>GSRC Trail Shirt</h3>
+            <p>Steel Blue GPX. The shirt we wore all season, made to order by Owayo.</p>
+            <p class="price">Expected around £70 <small>· price to be confirmed</small></p>
+          </div>
+        </article>
+      </div>
+      <p class="ask">Want one, or have a question? Contact Miguel at <a href="mailto:globalstache@gmail.com">globalstache@gmail.com</a> for more information.</p>
+    </div>
+  </section>
+
+  <section class="sec mist" id="run-club">
+    <div class="wrap rc">
+      <div>
+        <h2 class="wide">This club is for everyone!</h2>
+        <p class="lede">Whether you run once a year or once a day, move with us for Movember. Join Global 'Stache Run Club on Strava. No moustache required.</p>
+        <div class="btns">
+          <a class="btn" href="https://www.strava.com/clubs/998980" target="_blank" rel="noopener">Join on Strava</a>
+          <a class="btn ghost" href="https://www.instagram.com/globalstache/" target="_blank" rel="noopener">Instagram</a>
+          <a class="btn ghost" href="https://linktr.ee/globalstache" target="_blank" rel="noopener">All our links</a>
+        </div>
+      </div>
+      <img src="img/worldy.png" alt="Worldy, the Run Club mascot: an orange globe with a moustache, running" width="1200" height="1200" loading="lazy">
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p class="np">Global 'Stache is a non-profit idea with all proceeds going to the Movember Foundation</p>
+      <p>Contact: <a href="mailto:globalstache@gmail.com">globalstache@gmail.com</a> · <a href="https://www.instagram.com/globalstache/" target="_blank" rel="noopener">@globalstache</a></p>
+    </div>
+    <img src="img/runclub-white.png" alt="" width="1200" height="1200" loading="lazy">
+  </div>
+</footer>
+
+</body>
+</html>
