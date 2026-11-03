@@ -79,6 +79,22 @@ nav a:hover{border-color:var(--blue)}
 .ask{margin-top:24px;font-size:17px}
 .ask a{font-weight:700}
 
+/* View in 3D: a button on each kit card opens a turntable viewer */
+.meta .view3d{justify-self:start;gap:8px;margin-top:10px;padding:11px 14px;font-size:12px;white-space:nowrap;cursor:pointer}
+.view3d svg{width:18px;height:18px;flex:none}
+.v3d{border:0;padding:0;width:min(calc(100% - 32px),760px);max-height:calc(100% - 32px);background:var(--white);color:var(--ink);border-top:6px solid var(--blue)}
+.v3d::backdrop{background:rgba(20,20,40,.55)}
+.v3d .top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--rule)}
+.v3d h3{margin:0;font:900 22px/1 var(--display);font-stretch:112%;text-transform:uppercase}
+.v3d .x{border:2px solid var(--ink);background:var(--white);color:var(--ink);font:700 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;cursor:pointer}
+.v3d model-viewer{display:block;width:100%;height:min(68vh,calc(100vw - 32px),728px);background:var(--mist);--poster-color:var(--mist)}
+.v3d .angles{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:12px 16px}
+.v3d .angles button{font:700 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:9px 12px;border:2px solid var(--blue);background:var(--white);color:var(--blue);cursor:pointer}
+.v3d .angles button[aria-pressed="true"]{background:var(--blue);color:var(--white)}
+.v3d .arbtn{position:absolute;right:12px;bottom:12px;font:700 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border:2px solid var(--blue);background:var(--white);color:var(--blue)}
+.v3d .msg{position:absolute;inset:0;display:grid;place-items:center;color:var(--grey);font-size:14px;pointer-events:none}
+.v3d .msg[hidden]{display:none}
+
 .rc{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:center}
 .rc h2{color:var(--orange)}
 .rc img{width:min(100%,380px);justify-self:center}
@@ -148,6 +164,7 @@ footer img{width:100px}
             <h3>GSRC Race Singlet</h3>
             <p>SOAR × Global 'Stache. Our race vest is back for a new batch. Pre-orders open soon.</p>
             <p class="price">Expected around £95 <small>· price to be confirmed</small></p>
+            <button type="button" class="btn ghost view3d" data-src="models/gsrc-singlet.glb" data-name="GSRC Race Singlet" data-exposure="0.85"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>View in 3D</button>
           </div>
         </article>
         <article class="kt">
@@ -156,6 +173,7 @@ footer img{width:100px}
             <h3>GSRC Trail Shirt</h3>
             <p>Steel Blue GPX. The shirt we wore all season, made to order by Owayo.</p>
             <p class="price">Expected around £70 <small>· price to be confirmed</small></p>
+            <button type="button" class="btn ghost view3d" data-src="models/gsrc-trail.glb" data-name="GSRC Trail Shirt" data-exposure="1.05"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg>View in 3D</button>
           </div>
         </article>
       </div>
@@ -188,6 +206,52 @@ footer img{width:100px}
     <img src="img/runclub-white.png" alt="" width="1200" height="1200" loading="lazy">
   </div>
 </footer>
+
+<dialog class="v3d" id="v3d" aria-labelledby="v3d-title">
+  <div class="top"><h3 id="v3d-title">GSRC Race Singlet</h3><button type="button" class="x" id="v3d-close">Close</button></div>
+  <div style="position:relative">
+    <model-viewer id="v3d-mv" alt="3D model of the shirt. Drag to turn it." camera-controls touch-action="none" auto-rotate auto-rotate-delay="1500" rotation-per-second="24deg"
+      camera-orbit="30deg 82deg auto" min-camera-orbit="auto 60deg auto" max-camera-orbit="auto 100deg auto" field-of-view="26deg" min-field-of-view="14deg" max-field-of-view="30deg"
+      environment-image="neutral" shadow-intensity="0.7" shadow-softness="1" interaction-prompt="none" ar ar-modes="webxr scene-viewer quick-look">
+      <button slot="ar-button" class="arbtn" type="button">View in your space</button>
+    </model-viewer>
+    <div class="msg" id="v3d-msg">Loading the 3D model…</div>
+  </div>
+  <div class="angles" role="group" aria-label="Viewing angle">
+    <button type="button" data-o="0deg">Front</button><button type="button" data-o="40deg">Three-quarter</button><button type="button" data-o="90deg">Side</button><button type="button" data-o="180deg">Back</button><button type="button" id="v3d-spin" aria-pressed="true">Spin</button>
+  </div>
+</dialog>
+
+<script>
+// View in 3D: model-viewer loads only when someone opens the viewer, so the page stays light.
+(function(){
+  const dlg = document.getElementById('v3d'), mv = document.getElementById('v3d-mv'), msg = document.getElementById('v3d-msg');
+  const title = document.getElementById('v3d-title'), spin = document.getElementById('v3d-spin');
+  const angles = [...dlg.querySelectorAll('.angles button[data-o]')];
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lib = null;
+  function loadLib(){
+    if (!lib) lib = new Promise((res, rej) => { const s = document.createElement('script'); s.type = 'module';
+      s.src = 'https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js'; s.onload = res; s.onerror = rej; document.head.append(s); });
+    return lib;
+  }
+  function setSpin(on){ spin.setAttribute('aria-pressed', String(on)); if (on) mv.setAttribute('auto-rotate',''); else mv.removeAttribute('auto-rotate'); }
+  document.querySelectorAll('.view3d').forEach(b => b.addEventListener('click', () => {
+    title.textContent = b.dataset.name; mv.alt = '3D model of the ' + b.dataset.name + '. Drag to turn it.';
+    msg.textContent = 'Loading the 3D model…'; msg.hidden = false; angles.forEach(x => x.setAttribute('aria-pressed','false')); setSpin(!reduce);
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open','');
+    loadLib().then(() => { mv.exposure = parseFloat(b.dataset.exposure || '1'); mv.cameraOrbit = '30deg 82deg auto'; mv.fieldOfView = '26deg'; mv.src = b.dataset.src; })
+      .catch(() => { msg.textContent = "The 3D viewer didn't load. Check your connection and try again."; });
+  }));
+  mv.addEventListener('load', () => { msg.hidden = true; });
+  mv.addEventListener('error', () => { msg.hidden = false; msg.textContent = "The 3D model didn't load. Close and try again."; });
+  mv.addEventListener('camera-change', e => { if (e.detail && e.detail.source === 'user-interaction') angles.forEach(x => x.setAttribute('aria-pressed','false')); });
+  angles.forEach(b => b.addEventListener('click', () => { setSpin(false); mv.cameraOrbit = b.dataset.o + ' 82deg auto'; angles.forEach(x => x.setAttribute('aria-pressed', x===b)); }));
+  spin.addEventListener('click', () => { const on = spin.getAttribute('aria-pressed') !== 'true'; setSpin(on); if (on) angles.forEach(x => x.setAttribute('aria-pressed','false')); });
+  document.getElementById('v3d-close').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+})();
+</script>
 
 </body>
 </html>
